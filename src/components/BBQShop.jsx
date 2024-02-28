@@ -79,7 +79,7 @@ const BBQShop = () => {
       if (response.status === 200) {
         // ใช้ SweetAlert2 แทน alert ปกติ
         Swal.fire({
-          title: "สแกน QR code เพื่อชำระเงิน",
+          title: `สแกน QR code เพื่อชำระเงิน ${total} บาท`,
           text: "ชำระเงินสำเร็จแล้วให้ส่งรูปไปทางไลน์ร้านนะครับ",
           imageUrl: qrCodeImage,
           imageWidth: 300,
