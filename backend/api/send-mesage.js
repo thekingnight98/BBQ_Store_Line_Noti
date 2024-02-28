@@ -1,6 +1,16 @@
 const axios = require("axios");
 
 module.exports = async (req, res) => {
+  // กำหนด CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*'); // อนุญาต request จากทุก origins
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // ตอบสนองต่อ preflight request สำหรับ CORS
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method === 'POST') {
     const { message } = req.body;
     const lineToken = process.env.LINE_ACCESS_TOKEN; // ใช้ environment variable สำหรับเก็บ LINE access token
@@ -23,14 +33,13 @@ module.exports = async (req, res) => {
           },
         }
       );
-      res.json({ success: true, message: "Message sent successfully" });
+      return res.json({ success: true, message: "Message sent successfully" });
     } catch (error) {
       console.error("Failed to send message:", error.response.data);
-      res.status(500).json({ success: false, message: "Failed to send message" });
+      return res.status(500).json({ success: false, message: "Failed to send message" });
     }
   } else {
-    // Handle any other HTTP methods
-    res.setHeader('Allow', ['POST']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    // ตอบสนองต่อ HTTP methods อื่นๆ ด้วยข้อความไม่อนุญาต
+    return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 };
