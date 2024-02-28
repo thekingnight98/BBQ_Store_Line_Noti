@@ -72,7 +72,7 @@ const BBQShop = () => {
     productDetails += `,\nราคาทั้งหมด: ${total} บาท`;
 
     try {
-      const response = await axios.post("http://localhost:9000/send-message", {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/send-mesage`, {
         customerName: customerName,
         message: productDetails,
       });
